@@ -16,12 +16,52 @@
   <title>Datastore and Firebase Auth Example</title>
   <script src="{{ url_for('static', filename='script.js') }}"></script>
   <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="https://www.gstatic.com/firebasejs/9.13.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.13.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.js"></script>
+  <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.css" />
+
+  <script>
+    // TODO(DEVELOPER): Paste your firebaseConfig{} snippet here. Follow these instructions to
+    // find your config object: https://support.google.com/firebase/answer/7015592#web
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+      apiKey: "AIzaSyCQzKcVXZM84tWxrOTKIB2OAgJ-4LdpRlE",
+      authDomain: "test-f1d97.firebaseapp.com",
+      projectId: "test-f1d97",
+      storageBucket: "test-f1d97.firebasestorage.app",
+      messagingSenderId: "8467468039",
+      appId: "1:8467468039:web:45f4ad73d15e803f1e3fa2",
+      measurementId: "G-HWVRHGYGCN"
+};
+    firebase.initializeApp(firebaseConfig);
+    if (typeof firebase === 'undefined') {
+      const msg = "Please provide your Firebase configuration details. See instructions in templates/index.html.";
+      console.log(msg);
+      alert(msg);
+    }
+  </script>
+
 </head>
 <body>
   <h1>Datastore and Firebase Auth Example</h1>
-  <h2>Last 10 visits</h2>
-  {% for time in times %}
-    <p>{{ time['timestamp'] }}</p>
-  {% endfor %}
+ 
+  <div id="firebaseui-auth-container"></div>
+  <button id="sign-out" hidden=true>Sign Out</button>
+  <div id="login-info" hidden=true>
+    <h2>Login info:</h2>
+    {% if user_data %}
+      <dl>
+        <dt>Name</dt><dd>{{ user_data['name'] }}</dd>
+        <dt>Email</dt><dd>{{ user_data['email'] }}</dd>
+        <dt>Last 10 visits</dt><dd>
+          {% for time in times %}
+            <p>{{ time['timestamp'] }}</p>
+          {% endfor %} </dd>
+      </dl>
+    {% elif error_message %}
+      <p>Error: {{ error_message }}</p>
+    {% endif %}
+  </div>
 </body>
 </html>
